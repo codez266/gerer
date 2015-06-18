@@ -15,73 +15,29 @@ $app = new \Slim\Slim( array(
 			'templates.path' => './templates'
 		)
 	);
+// Define DB resource
+$app->container->singleton('db', function () {
+	return DB::getInstance( 'Config' );
+} );
 $app->add( $auth );
 //$app = new \Slim\Slim();
 $app->get('/', function () {
 	echo "Hello";
 });
-$app->get('/users/:name', function ($name) use($app) {
-	var_dump($_SESSION);
-	global $db;
-	//echo "Hello".$name;
-	$request = $app->request;
-	/*echo $request->getPath()."\n";
-	echo $request->getMethod()."\n";
-	echo $request->getContentType();*/
-	$db->query("SELECT memberId,Name,Email,Mobile,Designation from `users` WHERE username=?",array($name));
-	if ( $db->getResult() != false ) {
-		header("Content-Type: application/json");
-		echo json_encode($db->getResult());
-	} else {
-		echo json_encode( array( 'error' => 'User does not exist' ) );
-		echo json_encode($app->router()->getCurrentRoute());
-	}
-});
-$app->get( '/login', function () use($app) {
-	//session_start();
-	$app->render( 'login.php' );
-})->name("login");
-$app->post( '/profile', function () use($app) {
-	//session_start();
-	$request = $app->request;
-	$username = $request->post( 'name' );
-	$pass = $request->post( 'password' );
-	if ( ( $user = User::loadFromDb( $username, $pass ) ) != false ) {
-		$_SESSION['user'] = $user;
-		$user->setToken( md5(uniqid(mt_rand(), true)) );
-		$app->render( 'profile.php', array( 'token' => $user->getToken() ) );
-	} else {
-		$_SESSION['err'] = "Invalid username or password";
-		$_SESSION['username'] = $username;
-		$app->redirect( $app->urlFor( "login" ) );
-	}
-})->name("profile");
+$app->get('/users/:name', 'Routes:getUserInfo');
 
-$app->get( '/signup', function () use($app) {
-	//$app->render('login.mustache',array());
-	$app->render( 'signup.php' );
-});
-$app->post( '/signup', function () use($app) {
-	//session_start();
-	$request = $app->request;
-	$allPostVars = $app->request->post();
-	$status = User::verifyInput( $allPostVars );
-	// if input passes, proceed
-	if ( $status === true ) {
-		$params = array( $allPostVars['username'], $allPostVars['password'], $allPostVars['name'], $allPostVars['number'], $allPostVars['email'], $allPostVars['year'] );
-		//echo User::addUser( $params );
-		$status = User::addUser( $params );
-		if ( $status == true ) {
-			$app->redirect( $app->urlFor( "profile" ) );
-		}
-	}
-	$_POST['err'] = $status;
-	$app->render( 'signup.php' );
-});
-$app->get( '/logout', function () use($app) {
-	//$app->render('login.mustache',array());
-	if ( $_SESSION['user'] ) {
-		$_SESSION['user'] = null;
-	}
-});
+$app->get( '/login', 'Routes:login')->name("login");
+
+$app->post( '/profile', 'Routes:postProfile')->name("profile");
+
+$app->get( '/profile', 'Routes:getProfile')->name("profileget");
+
+$app->get( '/signup', 'Routes:getSignup');
+
+$app->post( '/signup', 'Routes:postSignup');
+
+$app->get( '/logout', 'Routes:getLogout');
+
+$app->post( '/createfirm', 'Routes:createFirm' );
+
 $app->run();

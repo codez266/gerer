@@ -7,7 +7,11 @@
 use Slim\Slim;
 class Auth extends \Slim\Middleware {
 	private $_encoding;
-	private static $_allowedUrls = array( '/login', '/signup', '/profile' );
+	/**
+	 * urls which are bypassed without check
+	 * @var array
+	 */
+	private static $_allowedUrls = array( '/login', '/signup', '/profile', '/logout' );
 	public function call() {
 		session_start();
 		$app = $this->app;
@@ -50,6 +54,15 @@ class Auth extends \Slim\Middleware {
 	public function verify( $sig, $stringToSign ) {
 
 	}
+
+	/**
+	 * Create a signature from request
+	 * @param  string $requestType
+	 * @param  string $contentType
+	 * @param  string $uri
+	 * @param  string $privateKey
+	 * @return string
+	 */
 	public function createSignature( $requestType, $contentType, $uri, $privateKey ) {
 		if ( $requestType == null ) {
 			$requestType = "";
@@ -67,6 +80,12 @@ class Auth extends \Slim\Middleware {
 		//echo $content;
 		return $signature;
 	}
+
+	/**
+	 * break Authorization header into public key and signature about ':'
+	 * @param  string $auth Authorization header value
+	 * @return string array of the public key and signature
+	 */
 	public function parseAuthorization( $auth ) {
 		$array = explode( ':', $auth );
 		return $array;

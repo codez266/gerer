@@ -10,13 +10,15 @@ class User {
 	private $_email;
 	private $_number;
 	private $_designation;
+	private $_level;
 	private $_token;
-	public function construct( $username, $name, $email, $number, $designation ) {
+	public function construct( $username, $name, $email, $number, $designation, $level ) {
 		$this->_username = $username;
 		$this->_name = $name;
 		$this->_email = $email;
 		$this->_number = $number;
 		$this->_designation = $designation;
+		$this->_level = $level;
 	}
 	/**
 	 * Adds user with data to database
@@ -50,7 +52,7 @@ class User {
 			//var_dump(password_hash( $password, PASSWORD_DEFAULT ));
 			//var_dump($result['password']);
 			if ( password_verify( $password, $result['password'] ) ) {
-				return new User( $result['username'], $result['Name'], $result['Mobile'], $result['Email'], $result['Designation'] );
+				return new User( $result['username'], $result['Name'], $result['Mobile'], $result['Email'], $result['Designation'], $result['level'] );
 			} else {
 				return false;
 			}
@@ -87,5 +89,11 @@ class User {
 	}
 	public function getToken() {
 		return $this->_token;
+	}
+	public function getLevel() {
+		return $this->_level;
+	}
+	public function getUserName() {
+		return $this->_username;
 	}
 }

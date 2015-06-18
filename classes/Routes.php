@@ -133,9 +133,55 @@ class Routes {
 
 	/**
 	 * Create a firm in database
+	 * @param  string $[name] Name of firm
 	 * @return
 	 */
-	public static function createFirm() {
+	public static function createFirm( $name ) {
+		$app = Slim::getInstance();
+		if ( isset( $_SESSION['user'] ) ) {
+			if ( $_SESSION['user']->getLevel() == 1 ) {
+				$response = $app->response;
+				JsonResponse::encode( $response, array( 'error' => 'not allowed' ) );
+			} else {
+				// only level 2 access can create
+				$data = array();
+				$data['request'] = $app->request;
+				$data['name'] = $name;
+				$data['designation'] = $request->post( 'designation' );
+				$data['amount'] = $request->post( 'amount' );
+				$data['finalized'] = $request->post( 'finalized' );
+				$data['description'] = $request->post( 'description' );
+				$data['addedBy'] = $_SESSION['user']['username'];
+				$status = Firm::verifyInput( $data );
+				if ( $status === true ) {
+					$result = Firm::addFirm( $data );
+					JsonResponse::encode( $response, array( 'status' => $result ) );
+				} else {
+					JsonResponse::encode( $response, array( 'error' => $status ) );
+				}
+			}
+		}
+	}
 
+	/**
+	 * Get a firm from database
+	 * @param  string $[name] Name of firm
+	 * @return
+	 */
+	public static function getFirms( $name ) {
+		$app = Slim::getInstance();
+		$db = $app->db;
+		$response = $app->response;
+		if ( isset( $_SESSION['user'] ) ) {
+			// only allowed one's given access
+			$query = "SELECT * from `firm` WHERE firm.id=(SELECT firmId from `firmAccess` WHERE firmId=(SELECT id from `firm` WHERE name=?) AND memberId=(SELECT memberId from `users` WHERE username=?) )";
+			$username = $_SESSION['user'];
+			$db->query( $query, array( $name, $_SESSION['user']->getUserName() ) );
+			if( $db->getRowCount() > 0 ) {
+				$result = $db->getResult()[0];
+				unset( $result['timestamp'], $result['id'] );
+				JsonResponse::encode( $response, $result );
+			}
+		}
 	}
 }

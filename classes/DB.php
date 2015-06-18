@@ -51,10 +51,12 @@ class DB {
 	}
 
 	public function insert( $table, $keys, $data ) {
+		$keys = array_filter( $keys );
+		$data = array_filter( $data );
 		$query = "INSERT INTO $table (";
 		$values = " VALUES (";
 		$first = true;
-		foreach( $keys as $field ) {
+		foreach ( $keys as $field ) {
 			if ( !$first ) {
 				$query .= ",";
 				$values .= ",";
@@ -67,6 +69,19 @@ class DB {
 		$values .= ")";
 		$query .= $values;
 		$this->query( $query , $data );
+	}
+
+	public function update( $table, $keys, $values, $where ) {
+		$keys = array_filter( $keys );
+		$data = array_filter( $data );
+		$query = "UPDATE $table SET ";
+		$i = 0;
+		foreach ( $keys as $key ) {
+			$value = $values[$i];
+			$query .= "$key=$value, ";
+			$i++;
+		}
+		$query = "WHERE $where=";
 	}
 	public function getResult() {
 		return $this->_result;

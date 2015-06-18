@@ -38,6 +38,8 @@ $app->post( '/signup', 'Routes:postSignup');
 
 $app->get( '/logout', 'Routes:getLogout');
 
-$app->post( '/createfirm', 'Routes:createFirm' );
+$app->post( '/firms/:name', 'Routes:createFirm' );
+
+$app->get( '/firms/:name', 'Routes:getFirms' );
 
 $app->run();

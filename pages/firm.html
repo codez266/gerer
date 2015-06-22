@@ -1,0 +1,16 @@
+  <div class="main">
+    <div class="firms" ng-controller="FirmCtrl as firm">
+      <div class="firm-detail" ng-repeat="company in firm.firms" ng-class="{{company.finalized}}?'done':'not-done'">
+        <h3 class="firm-name" >{{company.name}}<span class="glyphicon" ng-class="{{company.finalized}}?'glyphicon-ok':'glyphicon-remove'"></span></h3>
+        <p class="firm-desc">{{company.description}}</p>
+        <div class="firm-foooter">
+          <span class="firm-amount">{{company.amount|currency}}</span>
+          <span class="firm-addedBy">{{company.addedBy}}</span>
+          <a href="#/"><span class="firm-open glyphicon glyphicon-menu-down" ng-click="firm.index=$index"></span></a>
+        </div>
+        <div class="firm-visit" ng-show="firm.index==$index">
+          <h4>Details</h4>
+        </div>
+      </div>
+    </div>
+  </div>

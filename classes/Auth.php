@@ -27,7 +27,7 @@ class Auth extends \Slim\Middleware {
 			 * For native handling, browser based
 			 */
 			if ( isset( $_SESSION['user'] ) ) {
-				$token = $_SESSION['user']->getToken();
+				//$token = $_SESSION['user']->getToken();
 				$this->next->call();
 			}
 			else if ( $auth != null ) {

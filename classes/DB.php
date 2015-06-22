@@ -36,17 +36,19 @@ class DB {
 	public function query( $query, $params = array() ) {
 		$this->_error = false;
 		if ( $this->_query = $this->_pdo->prepare( $query ) ) {
-			if ( count( $params ) ) {
+			//if ( count( $params ) ) {
 				if ( $this->_query->execute( $params ) ) {
 					$this->_result = $this->_query->fetchAll( PDO::FETCH_ASSOC );
 					$this->_count = $this->_query->rowCount();
 				} else {
 					$this->_error = true;
-					$this->_errorInfo = $this->_pdo->errorInfo();
 					$this->_count = 0;
 					$this->_result = null;
+					$this->_errorInfo = $this->_pdo->errorInfo();
 				}
-			}
+			//} else {
+				$this->_errorInfo = "Parameters empty";
+			//}
 		}
 	}
 

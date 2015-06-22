@@ -1,0 +1,16 @@
+{
+  "name": "spons",
+  "description": "A sponsorship management portal for IIT Patna",
+  "version": "0.0.0",
+  "homepage": "",
+  "license": "GNU GPL-2.0",
+  "private": false,
+  "dependencies": {
+    "angular": "~1.4.0",
+    "angular-route": "~1.4.0",
+    "angular-loader": "~1.4.0",
+    "angular-mocks": "~1.4.0",
+    "bootstrap": "~3.3.5",
+    "less": "~2.5.1"
+  }
+}

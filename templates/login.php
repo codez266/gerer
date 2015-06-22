@@ -9,6 +9,7 @@
 			<?php
 			if( isset( $_SESSION['err'] ) ) {
 			echo $_SESSION['err'];
+			unset( $_SESSION['err'] );
 			}
 			?></div>
 		</header>

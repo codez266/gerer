@@ -19,14 +19,18 @@ class Firm {
 		$name = $data['name'];
 		$query = "SELECT * from `firm` WHERE name=?";
 		$db->query( $query , array( $name ) );
-		if ( $db->getCount() == 0 ) {
-			$data = self::createValues( $data );
-			$db->insert( "firm", $data[0], $data[1] );
-			return "Records added";
+		if ( $db->getError() !== false ) {
+			if ( $db->getCount() == 0 ) {
+				$data = self::createValues( $data );
+				$db->insert( "firm", $data[0], $data[1] );
+				return true;
+			} else {
+				// do not add 'addedBy' on updating records
+				unset( $data['addedBy'] );
+				return self::updateFirm( $data );
+			}
 		} else {
-			// do not add 'addedBy' on updating records
-			unset( $data['addedBy'] );
-			return self::updateFirm( $data );
+			return $db->getErrorInfo();
 		}
 	}
 	public static function updateFirm( $data ) {
@@ -42,9 +46,9 @@ class Firm {
 		$query .= "WHERE name=?";
 		$db->query( $query , $data[1] );
 		if ( $db->getError() !== false ) {
-			return "updated records";
+			return true;
 		} else {
-			return "error updating";
+			return $db->getErrorInfo();
 		}
 	}
 	public static function createValues( $data ) {

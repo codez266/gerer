@@ -1,0 +1,114 @@
+/* app css stylesheet */
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+
+header {
+	color: white;
+	position: relative;
+	padding: 1px;
+	margin-bottom: 1em;
+	background: #0066ff;
+	box-shadow: 2px 0 3px 3px #111111;
+}
+
+header a {
+	color: white;
+}
+
+.controls {
+	text-align: right;
+	font-size:27px;
+}
+
+.controls a {
+	padding:2px;
+}
+
+body {
+	background: #ececec;
+}
+
+.main {
+	width: 80%;
+	margin: 3em auto;
+	padding: 0.8em;
+	min-height: 300px;
+	background: white;
+	box-shadow: 0px 0px 4px 4px #c0c0c0;
+}
+
+.firm-detail {
+	position: relative;
+	padding: 15px;
+	margin: 20px 40px;
+	transition: all .5s;
+	-moz-transition: all .5s;
+}
+
+.firm-name {
+	margin: 10px 0;
+}
+
+.firm-name span {
+	position: absolute;
+	font-size: 20px;
+	top: 20px;
+	right: 20px;
+}
+
+.firm-open {
+	float: right;
+	margin-right: 10px;
+}
+
+.firm-visit {
+	max-height: 400px;
+	overflow-y: scroll;
+	margin-right: 10px;
+}
+
+.not-done {
+	box-shadow: 0px 0px 8px 0px #e00000;
+}
+
+.done {
+	box-shadow: 0px 0px 8px 0px #00ff33;
+}
+
+.firm-visits {
+	width: 80%;
+	margin: 0 auto;
+}
+
+.firm-visits .firm-list {
+	float: left;
+	min-width: 300px;
+	margin-left: 20px;
+}

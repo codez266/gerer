@@ -26,11 +26,13 @@ $app->get('/', function () {
 });
 $app->get('/users/:name', 'Routes:getUserInfo');
 
-$app->get( '/login', 'Routes:login')->name("login");
+$app->get( '/login', 'Routes:getLogin')->name("login");
 
 $app->post( '/profile', 'Routes:postProfile')->name("profile");
 
-$app->get( '/profile', 'Routes:getProfile')->name("profileget");
+$app->get( '/profile', 'Routes:getProfile');
+
+$app->get( '/init', 'Routes:getInit');
 
 $app->get( '/signup', 'Routes:getSignup');
 
@@ -40,6 +42,12 @@ $app->get( '/logout', 'Routes:getLogout');
 
 $app->post( '/firms/:name', 'Routes:createFirm' );
 
-$app->get( '/firms/:name', 'Routes:getFirms' );
+$app->get( '/firms/:name', 'Routes:getFirm' );
+
+$app->get( '/firms', 'Routes:getAllFirms' );
+
+$app->post( '/visit/:firmId/:contactId', 'Routes:addFirmVisit' );
+
+$app->get( '/visit/:firmId', 'Routes:getFirmVisits' );
 
 $app->run();

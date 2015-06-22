@@ -1,0 +1,11 @@
+<div class="firm-visits" ng-controller="VisitCtrl as visit">
+	<div class="firm-list">
+		<div class="list-group">
+
+			<a href="#" class="list-group-item" ng-repeat="company in visit.firms" ng-class="{{company.finalized}}?'list-group-item-success':'list-group-item-danger'">{{company.name}}</a>
+		</div>
+	</div>
+	<div class="visits">
+
+	</div>
+</div>

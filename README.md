@@ -1,5 +1,4 @@
-Webapp to manage a sponsorship portal for IITP
-<<<<<<< HEAD
+#Webapp to manage a sponsorship portal for IITP
 ##How to install
 To install server dependencies, write:
 ```
